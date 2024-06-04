@@ -1,9 +1,16 @@
 import express from 'express'
-import { register } from '../controller/auth.controller.js'
+import { deleteUser, getAllUsers, getSingleUser } from '../controller/user.controller.js'
+import { verifyToken } from '../middleware/verifyToken.js'
 
 const router = express.Router()
 
-//register user
-router.post('/auth/register', register)
+//get all users
+router.get('/users',verifyToken ,getAllUsers)
+
+//get single user
+router.get('/user/:id', getSingleUser)
+
+//delete user
+router.delete('/user/:id', deleteUser)
 
 export default router
