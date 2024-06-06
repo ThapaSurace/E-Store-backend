@@ -14,6 +14,7 @@ export const addProduct = async (req,res) => {
 }
 
 //getting all products
+// http:localhost:4000/api/products?limit=2&genre=Arts
 export const getAllProducts = async (req,res) => {
     const qGenre = req.query.genre
     const qLimit = req.query.limit || 10
