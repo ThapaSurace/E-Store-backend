@@ -3,6 +3,8 @@ import { dbConnection } from "./config/dbConnection.js";
 import mongoose from "mongoose";
 import authRoute from "./routes/auth.route.js"
 import userRoute from "./routes/user.route.js"
+import productRoute from "./routes/product.route.js"
+import orderRoute from "./routes/order.route.js"
 import cors from "cors"
 import morgan from 'morgan'
 import dotenv from "dotenv"
@@ -35,7 +37,12 @@ app.get("/", (req, res) => {
 
 //auth route
 app.use('/api', authRoute)
+//user route
 app.use('/api',userRoute)
+
+app.use('/api',productRoute)
+
+app.use('/api',orderRoute)
 
 
 
