@@ -18,18 +18,27 @@ export const addProduct = async (req,res) => {
 export const getAllProducts = async (req,res) => {
     const qGenre = req.query.genre
     const qLimit = req.query.limit || 10
+    const qSort = req.query.sort
   try {
     let products
+    let sortOptions ={
+        createdAt: -1   //sort by newest product
+    }
+
+    if(qSort){
+        sortOptions = {price: qSort === "asc" ? 1 : -1}
+    }
+
     if(qGenre){
         products = await Product.find({
             genre: {
                 $in : [qGenre]   
             }
-        }).limit(qLimit)
+        }).sort(sortOptions).limit(qLimit)
     }else{
-        products = await Product.find().limit(qLimit)
+        products = await Product.find().sort(sortOptions).limit(qLimit)
     }
-    // if(!products) return res.status(400).send("Nothing found!")
+    if(!products) return res.status(400).send("Nothing found!")
      res.status(200).send(products)    
   } catch (error) {
     res.status(500).send(error)
