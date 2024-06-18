@@ -1,15 +1,34 @@
 import Order from "../model/order.model.js"
 
-export const addOrder = async (req,res) => {
-    // if(!req.isAdmin) return res.status(401).send("Only admin can add product")
-    try {
-       const newOrder = new Order(req.body) 
-       await newOrder.save()
-       res.status(201).send(newOrder)
-    } catch (error) {
-        res.status(500).send(error)
-    }
-}
+import Stripe from "stripe";
+
+export const addOrder = async (req, res) => {
+  const stripe = new Stripe(process.env.STRIPE);
+
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: req.body.amount * 100,
+    currency: "usd",
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  });
+
+  try {
+    const newOrder = new Order({
+      ...req.body,
+      payment_intent: paymentIntent.id,
+    });
+   await newOrder.save();
+    res.status(200).send({
+      clientSecret: paymentIntent.client_secret,
+    });
+
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+
 
 //get all order
 export const getAllOrders = async (req,res) => {
@@ -22,6 +41,7 @@ export const getAllOrders = async (req,res) => {
         res.status(500).send(error)
     }
 }
+
 
 //get user orders
 export const getUserOrders = async (req,res) => {

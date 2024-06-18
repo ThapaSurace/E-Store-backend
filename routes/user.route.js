@@ -5,7 +5,7 @@ import { verifyToken } from '../middleware/verifyToken.js'
 const router = express.Router()
 
 //get all users
-router.get('/users',verifyToken ,getAllUsers)
+router.get('/users', verifyToken ,getAllUsers)
 
 //get single user
 router.get('/user/:id', getSingleUser)

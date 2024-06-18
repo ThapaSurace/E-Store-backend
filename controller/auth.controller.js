@@ -32,16 +32,15 @@ export const register = async (req, res) => {
 
 
 //login
-export const login = async (req,res) => {
-  const {username, password} = req.body
+export const login = async (req, res) => {
+  const { username, password } = req.body
 
-  const user = await User.findOne({username})
-  if(!user) return res.status(400).send("Username not found")
-  
+  const user = await User.findOne({ username })
+  if (!user) return res.status(400).send("Username not found")
+
   const matchPassword = bcrypt.
-  compareSync(password,user.password)  
-  if(!matchPassword) return res.status(400).
-  send("Password didnt match")
+    compareSync(password, user.password)
+  if (!matchPassword) return res.status(400).send("Password didnt match")
 
   const token = jwt.sign(
     {
@@ -52,7 +51,7 @@ export const login = async (req,res) => {
     // {expiresIn: "20s"}
   )
 
-  res.cookie("accessToken",token,{
+  res.cookie("accessToken", token, {
     secure: true,
     sameSite: "none"
   }).status(200).send(user)
@@ -60,9 +59,9 @@ export const login = async (req,res) => {
 
 
 //logout 
-export const logout = async (req,res) => {
-  res.clearCookie("accessToken",{
-    sameSite: "none",
-    secure: true
+export const logout = async (req, res) => {
+  res.clearCookie("accessToken", {
+    // sameSite: "none",    //uncomment in prduction
+    // secure: true   //uncomment in prduction
   }).status(200).send("User logout successfully!")
 }

@@ -18,7 +18,7 @@ dbConnection()
 
 // This allows requests from http://localhost:3000 to access the server's resources
 // Credentials such as cookies will be included in cross-origin requests
-app.use(cors({origin: ['http://localhost:3000'], credentials:true}))
+app.use(cors({origin: ['http://localhost:3000'],methods: ["GET", "POST", "PUT", "DELETE"], credentials: true}))
 
 
 // body parser

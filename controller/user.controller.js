@@ -2,8 +2,8 @@ import User from "../model/user.model.js"
 
 //get all users
 export const getAllUsers = async (req,res) => {
-    if(!req.isAdmin) return res.status(403).
-    send("Only admin can access thsi route")
+    // if(!req.isAdmin) return res.status(403).
+    // send("Only admin can access thsi route")
     try {
         const users = await User.find()
         if(!users) return res.status(400).send("Nothing")
